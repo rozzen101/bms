@@ -85,6 +85,8 @@ class Business extends CI_Controller {
 		else if(!$isBusinessExist){redirect('business', 'refresh');}
 		if($this->session->userdata('is_logged_in') == 1)
 		{
+			$module = 'BUSINESS';
+			$data['actionLog'] = $this->_genFunction->get_action_log($bid,$module);
 			$data['bInf'] = $this->_business->get_business_inf($bid);
 			$data['bType'] = $this->_business->get_busines_type();
 			$this->load->view('includes/header');

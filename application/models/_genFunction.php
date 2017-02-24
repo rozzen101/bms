@@ -176,6 +176,18 @@ class _genFunction extends CI_Model
         return $isBusinessExist;
     }
 
+    function get_action_log($bId,$module){
+        $this->db->where(array('aSubId' => $bId, 'aModule' => $module)); 
+        $res = $this->db->get('tbl_action_log');
+        return $res;
+    }
+
+    function get_action_log_admin($bId,$admin){
+        $this->db->where(array('aSubId' => $bId, 'aCreateBy' => $admin)); 
+        $res = $this->db->get('tbl_action_log');
+        return $res;
+    }
+
     //FOR AUTO NUMBERS
     function get_auNum(){
         $res=$this->db->get('tbl_auto_numbers');

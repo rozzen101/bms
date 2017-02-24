@@ -60,6 +60,16 @@ class _business extends CI_Model
 			//UPDATE AUTO NUMBERS
 			//$this->db->query("UPDATE tbl_auto_numbers SET auRunningVal='{$auRunningVal}' WHERE auKeyname='BID'");
 
+			//ADD TO ACTION LOG
+			$actioLogArray = array(
+				'aModule'		=> 'BUSINESS',
+				'aSubId'		=> $bid,
+				'aRemark'		=> 'Created this business information',
+				'aCreateBy'		=> $bDataArray['bCreatedBy'],
+				'aCreatedDate'	=> $bDataArray['bCreatedDate']
+			);
+			$this->db->insert('tbl_action_log',$actioLogArray);
+
 			$retInf['ok'] = 1;
 			$retInf['bid'] = $bid;
 			$retInf['msg'] = "New BUSINESS has been ADDED!";
@@ -150,6 +160,16 @@ class _business extends CI_Model
 
 			//UPDATE AUTO NUMBERS
 			//$this->db->query("UPDATE tbl_auto_numbers SET auRunningVal='{$auRunningVal}' WHERE auKeyname='BID'");
+
+			//ADD TO ACTION LOG
+			$actioLogArray = array(
+				'aModule'		=> 'BUSINESS',
+				'aSubId'		=> $bId,
+				'aRemark'		=> 'Updated Resident Details',
+				'aCreateBy'		=> $bDataArray['bEditedBy'],
+				'aCreatedDate'	=> $bDataArray['bEditedDate']
+			);
+			$this->db->insert('tbl_action_log',$actioLogArray);
 
 			$retInf['ok'] = 1;
 			$retInf['msg'] = "BUSINESS has been UPDATED!";
@@ -247,6 +267,17 @@ class _business extends CI_Model
 			//DELETE OWNER
 			$this->db->where('bid',$bId);
 			$this->db->delete('tbl_business_owner');
+
+			//ADD TO ACTION LOG
+			$actioLogArray = array(
+				'aModule'		=> 'BUSINESS',
+				'aSubId'		=> $bId,
+				'aRemark'		=> 'Delete Business ID no. '.$bId,
+				'aCreateBy'		=> $this->session->userdata('username'),
+				'aCreatedDate'	=> date("Y-m-d h:i:s", time())
+			);
+			$this->db->insert('tbl_action_log',$actioLogArray);
+
 			$retInf['ok'] = 1;
 			$retInf['msg'] = "BUSINESS has been DELETED!";
 		}else{

@@ -81,7 +81,7 @@
                                                         <td>Website:</td>
                                                         <td><!-- <label><?php echo $bData->bWebsite; ?></label> -->
                                                             <font class="links cl-effect-1">
-                                                                <a href="<?php echo $bData->bWebsite; ?>">VISIT LINK</a>
+                                                                <a href="<?php echo $bData->bWebsite; ?>" target="_blank"><?php echo $bData->bWebsite; ?></a>
                                                             </font>
                                                         </td>
                                                     </tr>
@@ -118,27 +118,21 @@
                                             <div collapse="activities" ng-init="activities=false" class="panel-wrapper">
                                                 <div class="panel-body">
                                                     <ul class="timeline-xs">
-                                                         <li class="timeline-item">
-                                                            <div class="margin-left-15">
-                                                                <div class="text-muted text-small">
-                                                                    February 11, 2017 10:00 AM
-                                                                </div>
-                                                                <p>
-                                                                    Updated Resident Details
-                                                                </p>
-                                                            </div>
-                                                        </li>
-                                                        <li class="timeline-item">
-                                                            <div class="margin-left-15">
-                                                                <div class="text-muted text-small">
-                                                                   February 10, 2017 08:43 AM
-                                                                </div>
-                                                                <p>
-                                                                    Request Clearanace for Employment
-                                                                </p>
-                                                            </div>
-                                                        </li>
-                                                       
+                                                        <?php 
+                                                            foreach($actionLog->result_array() as $aRow){?>
+                                                                <li class="timeline-item">
+                                                                    <div class="margin-left-15">
+                                                                        <div class="text-muted text-small">
+                                                                            <?php echo $aRow['aCreateBy']; ?> - <?php echo date("F t, Y h:i A",strtotime($aRow['aCreatedDate'])); ?>
+                                                                        </div>
+                                                                        <p>
+                                                                            <?php echo $aRow['aRemark']; ?>  
+                                                                        </p>
+                                                                    </div>
+                                                                </li>
+                                                        <?php
+                                                            }
+                                                        ?>
                                                     </ul>
                                                 </div>
                                             </div>
