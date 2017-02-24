@@ -7,3 +7,5 @@ application/cache/*
 application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
+public/business/16/bLogo_16.gif
+public/business/14/bLogo_14.png
