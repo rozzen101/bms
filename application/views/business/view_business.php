@@ -42,13 +42,13 @@
                                                             $bData = $bInf->row();
                                                             $businessImgURL = $this->config->item('businessImgURL');
                                                             if($bData->bLogo != ''){
-                                                                $blogo = $businessImgURL.'/'.$bData->bLogo;
+                                                                $blogo = $businessImgURL.'/'.$bData->bId.'/'.$bData->bLogo;
                                                             }else{
                                                                 $blogo = $businessImgURL.'/businessDefault.png';
                                                             }
                                                         ?>
                                                         <div class="fileinput-new thumbnail">
-                                                            <img src="<?php echo $blogo; ?>" width="150" height="150" class="img-circle" border="0">
+                                                            <img src="<?php echo $blogo; ?>" width="150" height="150" border="0">
                                                         </div>
                                                     </div>
                                                 </div>

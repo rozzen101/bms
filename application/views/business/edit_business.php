@@ -77,7 +77,7 @@
                             $bData = $bInf->row();
                             $businessImgURL = $this->config->item('businessImgURL');
                             if($bData->bLogo != ''){
-                                $blogo = $businessImgURL.'/'.$bData->bLogo;
+                                $blogo = $businessImgURL.'/'.$bData->bId.'/'.$bData->bLogo;
                             }else{
                                 $blogo = $businessImgURL.'/businessDefault.png';
                             }
@@ -87,7 +87,25 @@
                               Business Information
                             </legend>
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-3">
+                                    <div class="col-md-12">
+                                        <center>
+                                            <div class="fileinput-new thumbnail">
+                                                <img id="shLogo" src="<?php echo $blogo; ?>" width="150" height="150" border="0">
+                                            </div>
+                                        </center>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>
+                                                Select Business Logo
+                                            </label>
+                                            <input name="bLogo" id="bLogo" class="form-control" type="file" class="file" accept="image/x-png, image/gif, image/jpeg, image/jpg" onchange="readURL(this);" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-9">
                                     <div class="form-group">
                                         <label>
                                             Business Name
@@ -96,9 +114,7 @@
                                         <input type="hidden" name="xbId" id="xbId" value="<?php echo $bData->bId; ?>">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-9">
                                     <div class="form-group">
                                         <label>
                                             Business Description
@@ -106,9 +122,7 @@
                                         <textarea name="bDesc" id="bDesc" placeholder="" class="form-control" required><?php echo $bData->bDesc; ?></textarea>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-9">
                                     <div class="form-group">
                                         <label>
                                             Business Address
@@ -405,6 +419,21 @@
         obj = $.parseJSON(myTypeData);
         for (var i in obj) {
           alert(obj[i]);
+        }
+    }
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#shLogo')
+                    .attr('src', e.target.result)
+                    .width(150)
+                    .height(200);
+            };
+
+            reader.readAsDataURL(input.files[0]);
         }
     }
 </script>

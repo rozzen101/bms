@@ -22,6 +22,32 @@ class _business extends CI_Model
 		$insBis = $this->db->insert('tbl_business',$bDataArray);
 		if($insBis){
 			$bid = $this->db->insert_id();
+			//FOR FILE UPLOAD
+			if(isset($_FILES['bLogo']["tmp_name"])){
+				$bLogo=$_FILES['bLogo']["name"];
+			  if ($_FILES['bLogo']["error"] > 0){
+					$msg="<b>DOCUMENT</b> ERROR during UPLOAD!";
+					return $msg;
+			  }else{
+					//GET FILE EXTENSION
+					$ext_temp=explode(".", $bLogo);
+					$ext = end($ext_temp);
+					$newFileName="bLogo_".$bid.".".$ext;
+					//GET FILE LOCATION
+					$dirLocation="public/business/".$bid."/";
+					if (!file_exists("public/business/".$bid)) {
+						mkdir("public/business/".$bid, 0777, true);
+					}
+
+					//SAVE NEW FILE
+					move_uploaded_file($_FILES['bLogo']["tmp_name"],$dirLocation."".$newFileName);
+					
+					//SAVE TO DATABASE
+					$this->db->where('bId',$bid);
+					$this->db->update('tbl_business',array('bLogo'=>$newFileName));
+			  }
+			}
+			//END FILE UPLAD
 			//INSERT OWNER
 			foreach ($this->input->post('xres_id') as $xres_id){
 				$ownerData = array(
@@ -67,6 +93,32 @@ class _business extends CI_Model
 		$this->db->where('bId',$bId);
 		$insBis = $this->db->update('tbl_business',$bDataArray); 
 		if($insBis){
+			//FOR FILE UPLOAD
+			if(isset($_FILES['bLogo']["tmp_name"])){
+				$bLogo=$_FILES['bLogo']["name"];
+			  if ($_FILES['bLogo']["error"] > 0){
+					$msg="<b>DOCUMENT</b> ERROR during UPLOAD!";
+					return $msg;
+			  }else{
+					//GET FILE EXTENSION
+					$ext_temp=explode(".", $bLogo);
+					$ext = end($ext_temp);
+					$newFileName="bLogo_".$bId.".".$ext;
+					//GET FILE LOCATION
+					$dirLocation="public/business/".$bId."/";
+					if (!file_exists("public/business/".$bId)) {
+						mkdir("public/business/".$bId, 0777, true);
+					}
+
+					//SAVE NEW FILE
+					move_uploaded_file($_FILES['bLogo']["tmp_name"],$dirLocation."".$newFileName);
+					
+					//SAVE TO DATABASE
+					$this->db->where('bId',$bId);
+					$this->db->update('tbl_business',array('bLogo'=>$newFileName));
+			  }
+			}
+			//END FILE UPLAD
 			//GET OWNER LIST
 			$newOwnerArray = $this->input->post('xres_id');
 			$ownArray = array();
@@ -164,7 +216,7 @@ class _business extends CI_Model
 		{
 			$businessImgURL = $this->config->item('businessImgURL');
 			if($aRow['bLogo'] != ''){
-				$blogo = $businessImgURL.'/'.$aRow['bLogo'];
+				$blogo = $businessImgURL.'/'.$aRow['bId'].'/'.$aRow['bLogo'];
 			}else{
 				$blogo = $businessImgURL.'/businessDefault.png';
 			}
