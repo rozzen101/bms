@@ -178,12 +178,14 @@ class _genFunction extends CI_Model
 
     function get_action_log($bId,$module){
         $this->db->where(array('aSubId' => $bId, 'aModule' => $module)); 
+        $this->db->order_by('aCreatedDate', 'DESC');
         $res = $this->db->get('tbl_action_log');
         return $res;
     }
 
     function get_action_log_admin($bId,$admin){
         $this->db->where(array('aSubId' => $bId, 'aCreateBy' => $admin)); 
+        $this->db->order_by('aCreatedDate', 'DESC');
         $res = $this->db->get('tbl_action_log');
         return $res;
     }
