@@ -94,7 +94,7 @@
 
 
                             <li>
-                              <a href="<?php echo base_url();?>index.php/resident">
+                              <a href="<?php echo base_url();?>index.php/residents">
                                     <div class="item-content">
                                          <div class="item-media">
                                             <i class="ti-user" ></i>

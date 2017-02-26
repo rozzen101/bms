@@ -1,65 +1,105 @@
 <?php
 class _residents extends CI_Model
-{
-	/*
-	Developer:  Loubrando Dejito
-	Class:      Model
-	Date: 		December 31, 2015
-	Desc:		Retrieve employment data on [employment] look-up table
-	*/
-	function get_emp_data()
-	{
-		$query = $this->db->query("SELECT * FROM tbl_employment ORDER BY emp_id ASC");
+{	
+		function get_resident_list(){
 
-		if($query->num_rows() > 0)
-		{
-			foreach($query->result() as $row)
-			{
-				$data[] = $row;
-			}
+		$fname =  $this->input->get_post('fname');
+		$mname =  $this->input->get_post('mname');
+		$lname =  $this->input->get_post('lname');
+		$gender =  $this->input->get_post('gender');
+		$civil_status =  $this->input->get_post('civil_status');
+		$sitio =  $this->input->get_post('sitio');
 
-			return $data;
-		}
-		else
+		$whereData = '';
+		if($fname != ''){$whereData .= "fname LIKE '%".$fname."%' AND ";}
+		if($mname != ''){$whereData .= "mname LIKE '".$mname."%' AND ";}
+		if($lname != ''){$whereData .= "lname LIKE '%".$lname."%' AND ";}
+		if($gender != ''){$whereData .= "gender = '".$gender."' AND ";}
+		if($civil_status != ''){$whereData .= "civil_status = '".$civil_status."' AND ";}
+		if($sitio != ''){$whereData .= "sitio LIKE '%".$sitio."%' AND ";}
+
+		if($whereData != ''){$whereData = "WHERE ".$whereData;}
+
+		$whereData = substr($whereData, 0, -4);
+
+		$sql = "SELECT
+				*
+				FROM
+				tbl_resident
+				".$whereData.' GROUP BY res_id';
+
+		$rResult = $this->db->query($sql);
+		$iTotal = $rResult->num_rows();
+		 
+		// Output
+		$output = array(
+	        "sEcho" => 1,
+	        "iTotalRecords" => $iTotal,
+	        "iTotalDisplayRecords" => $iTotal,
+	        "aaData" => array()
+	    );
+		 
+		$counter=1;
+		foreach($rResult->result_array() as $aRow)
 		{
-			return false;
+
+			$row = array();
+				$row[] = $counter;
+				$row[] = $aRow['fname'].' '.$aRow['mname'].' '.$aRow['lname'];
+				$row[] = date('m/d/Y',strtotime($aRow['birthdate']));
+				$row[] = $aRow['gender'];
+				$row[] = $aRow['age'];
+				$row[] = $aRow['civil_status'];
+				$row[] = $aRow['sitio'];
+				$row[] = '<a href="'.base_url().'index.php/residents/view_resident/'.$aRow['res_id'].'" class="btn btn-transparent btn-xs btn-success"><i class="ti-folder"></i></a>';
+				$row[] = '<a href="'.base_url().'index.php/residents/delete_resident/'.$aRow['res_id'].'" class="btn btn-transparent btn-xs btn-danger"><i class="ti-close"></i></a>';
+			$counter++;
+			$output['aaData'][] = $row;
 		}
+		return $output;
 	}
 
-
-	/*
-	Developer:  Loubrando Dejito
-	Class:      Model
-	Date: 		December 31, 2015
-	Desc:		Retrieve all residents in a barangay
-	*/
-	function get_all_residents_data($brgy_id)
-	{
-		$query = $this->db->query("SELECT * FROM tbl_resident WHERE res_brgy_id = $brgy_id ORDER BY res_id DESC");
-
-		if($query->num_rows() > 0)
-		{
-			foreach($query->result() as $row)
-			{
-				$data[] = $row;
+	function save_residents(){
+		//ADD BUSINESS INFO
+		$rDataArray = array(
+			'fname'			=> $this->input->post('bType'),
+			'bName'			=> $this->input->post('bName'),
+			'bDesc'			=> $this->input->post('bDesc'),
+			'bAddress'		=> $this->input->post('bAddress'),
+			'bContact'		=> $this->input->post('bContact'),
+			'bFax'			=> $this->input->post('bFax'),
+			'bEmail'		=> $this->input->post('bEmail'),
+			'bWebsite'		=> $this->input->post('bWebsite'),
+			'bCleranceFee'	=> $this->input->post('bClearanceFee'),
+			'bStatus'		=> 'PENDING',
+			'bRequestDate'	=> date("Y-m-d h:i:s", time()),
+			'bRemark'		=> $this->input->post('bRemark'),
+			'bCreatedBy'	=> $this->session->userdata('username'),
+			'bCreatedDate'	=> date("Y-m-d h:i:s", time())
+		);
+		$insBis = $this->db->insert('tbl_business',$bDataArray);
+		if($insBis){
+			$bid = $this->db->insert_id();
+			//INSERT OWNER
+			foreach ($this->input->post('xres_id') as $xres_id){
+				$ownerData = array(
+					'bid' => $bid,
+					'rid' => $xres_id
+				);
+				$insOwner = $this->db->insert('tbl_business_owner',$ownerData);
 			}
+			$retInf['ok'] = 1;
+			$retInf['msg'] = "New BUSINESS has been ADDED!";
+		}else{
+			$errNo   = $this->db->_error_number();
+       		$errMess = $this->db->_error_message();
+			$retInf['ok'] = 0;
+			$retInf['msg'] = 'ADD NEW DATA ERROR {$errNo}:{$errMess}!';
+		}
 
-			return $data;
-		}
-		else
-		{
-			return false;
-		}
+		return $retInf;
 	}
 
-
-
-	/*
-	Developer:  Loubrando Dejito
-	Class:      Model
-	Date: 		December 31, 2015
-	Desc:		Retrieve resident data
-	*/
 	function get_resident_data($res_id)
 	{
 		$query = $this->db->query("SELECT * FROM tbl_resident WHERE res_id = $res_id");
@@ -79,114 +119,5 @@ class _residents extends CI_Model
 		}
 	}
 
-
-	/*
-	Developer:  Loubrando Dejito
-	Class:      Model
-	Date: 		December 31, 2015
-	Desc:		Save new resident
-	*/
-	function save_resident()
-	{	
-
-		$sitio_id = $this->input->post('res_sitio_id');
-		$sitio_query = $this->db->query("SELECT * FROM sitio WHERE sitio_id = $sitio_id");
-		$sitio_row = $sitio_query->row();
-		$sitio_name = $sitio_row->sitio_name;
-
-
-		$emp_id = $this->input->post('res_emp_id');
-		$emp_query = $this->db->query("SELECT * FROM tbl_employment WHERE emp_id = $emp_id");
-		$emp_row = $emp_query->row();
-		$emp_desc = $emp_row->emp_desc;
-
-		$res_refkey = 'RES-'.date('YmdHis');
-		$data_resident = array(
-			'res_refkey' => $res_refkey,
-			'res_fname' => $this->input->post('res_fname'),
-			'res_mname' => $this->input->post('res_mname'),
-			'res_lname' => $this->input->post('res_lname'),
-			'res_religion' => $this->input->post('res_religion'),
-			'res_civil_status' => $this->input->post('res_civil_status'),
-			'res_spouse_name' => $this->input->post('res_spouse_name'),
-			'res_no_childs' => $this->input->post('res_no_childs'),
-			'res_child_names' => $this->input->post('res_child_names'),
-			'res_age' => $this->input->post('res_age'),
-			'res_gender' => $this->input->post('res_gender'),
-			//'res_image' => $this->input->post('res_image'),
-			//'res_address' => $this->input->post('res_address'),
-			'res_emp_id' => $emp_id,
-			'res_emp_desc' => $emp_desc,
-			'res_brgy_id' => $this->input->post('res_brgy_id'),
-			'res_brgy_name' => $this->input->post('res_brgy_name'),
-			'res_sitio_id' => $sitio_id,
-			'res_sitio_name' => $sitio_name,
-			'res_city_id' => $this->input->post('res_city_id'), 
-			'res_city_name' => $this->input->post('res_city_name'),
-			'res_status' =>  $this->input->post('res_status')
-			);
-
-
-		$insert_resident = $this->db->insert('residents',$data_resident);
-		if($insert_resident){ return 1;}else{ return  0;}
-
-	}
-
-
-	/*
-	Developer:  Loubrando Dejito
-	Class:      Model
-	Date: 		December 31, 2015
-	Desc:		Update resident information
-	*/
-	function update_resident()
-	{	
-
-		/*Retrieve sitio data*/
-		$sitio_id = $this->input->post('res_sitio_id');
-		$sitio_query = $this->db->query("SELECT * FROM sitio WHERE sitio_id = $sitio_id");
-		$sitio_row = $sitio_query->row();
-		$sitio_name = $sitio_row->sitio_name;
-
-		/*Retrieve employment data on look-up table*/
-		$emp_id = $this->input->post('res_emp_id');
-		$emp_query = $this->db->query("SELECT * FROM tbl_employment WHERE emp_id = $emp_id");
-		$emp_row = $emp_query->row();
-		$emp_desc = $emp_row->emp_desc;
-
-		
-		$data_resident = array(
-			
-			'res_fname' => $this->input->post('res_fname'),
-			'res_mname' => $this->input->post('res_mname'),
-			'res_lname' => $this->input->post('res_lname'),
-			'res_religion' => $this->input->post('res_religion'),
-			'res_civil_status' => $this->input->post('res_civil_status'),
-			'res_spouse_name' => $this->input->post('res_spouse_name'),
-			'res_no_childs' => $this->input->post('res_no_childs'),
-			'res_child_names' => $this->input->post('res_child_names'),
-			'res_age' => $this->input->post('res_age'),
-			'res_gender' => $this->input->post('res_gender'),
-			//'res_image' => $this->input->post('res_image'),
-			//'res_address' => $this->input->post('res_address'),
-			'res_emp_id' => $emp_id,
-			'res_emp_desc' => $emp_desc,
-			'res_brgy_id' => $this->input->post('res_brgy_id'),
-			'res_brgy_name' => $this->input->post('res_brgy_name'),
-			'res_sitio_id' => $sitio_id,
-			'res_sitio_name' => $sitio_name,
-			'res_city_id' => $this->input->post('res_city_id'), 
-			'res_city_name' => $this->input->post('res_city_name'),
-			'res_status' =>  $this->input->post('res_status')
-			);
-
-		$this->db->where('res_id', $this->input->post('res_id'));
-		$insert_resident = $this->db->update('residents',$data_resident);
-		if($insert_resident){ return 1;}else{ return  0;}
-
-	}
-
-
 }
-
 ?>
