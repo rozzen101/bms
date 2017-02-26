@@ -335,7 +335,7 @@
             $( "#noOwnerSelected" ).remove();
             $("#ownerList").append('<tr id="ownerLoading"><td colspan="7"><center><img src="'+base_url+'public/assets/images/loading/loading11.gif" border="0"/></center></td></tr>');
             //GET RESIDENT INFO.
-            $.post(base_url+'index.php/business/resident_indData','&resId='+rid,function(data){
+            $.post(base_url+'index.php/business/resident_indData','&rId='+rid,function(data){
                 if(data != 1){
                     $("#ownerList").append(data);
                     $( "#ownerLoading" ).remove();

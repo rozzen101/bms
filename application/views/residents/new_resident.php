@@ -25,40 +25,11 @@ input {
                                 </div>
                                 <div class="col-md-12">
                                           <div class="col-md-12">
-                        <form name="businessForm" id="businessForm" action="<?php echo base_url();?>index.php/residents/save_residents" autocomplete="off" method="POST" enctype="multipart/form-data">
+                        <form name="residentForm" id="residentForm" action="<?php echo base_url();?>index.php/residents/save_resident" autocomplete="off" method="POST" enctype="multipart/form-data">
                         <fieldset>
                             <legend>
                               Resident Information
                             </legend>
-                            <!-- <div class="row">
-                                <div class="col-md-4"></div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                         <center>
-                                        <div class="fileinput fileinput-new" data-provides="fileinput">
-                                            <div class="user-image">
-                                                <div class="fileinput-new thumbnail"><img id="imgPreview" src="<?php echo base_url();?>public/assets/images/default_user.png" height="100" width="200">
-                                                </div>
-                                              
-                                                <div class="user-image-buttons">
-                                                    <span class="btn btn-azure btn-file btn-sm"><span class="fileinput-new"><i class="fa fa-pencil"></i></span><span class="fileinput-exists"><i class="fa fa-pencil"></i></span>
-                                                        <input type="file" id="display_picture" name="display_picture">
-                                                    </span>
-                                                    <a  id="imgRemove" class="btn fileinput-exists btn-red btn-sm" data-dismiss="fileinput">
-                                                        <i class="fa fa-times"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                       
-                                          <label>
-                                            Display Picture
-                                        </label>
-                                        </center>
-                                    </div>
-                                </div>
-                                <div class="col-md-4"></div>
-                            </div> -->
                             <div class="row">
                               <div class="col-md-3">
                                     <div class="col-md-12">
@@ -73,7 +44,7 @@ input {
                                             <label>
                                                 Select Business Logo
                                             </label>
-                                            <input id="display_picture" name="display_picture" class="form-control" type="file" class="file" accept="image/x-png, image/gif, image/jpeg, image/jpg" onchange="readURL(this);" required>
+                                            <input id="rImage" name="rImage" class="form-control" type="file" class="file" accept="image/x-png, image/gif, image/jpeg, image/jpg" onchange="readURL(this);" required>
                                         </div>
                                     </div>
                                 </div>
@@ -83,7 +54,7 @@ input {
                                         <label>
                                             First Name
                                         </label>
-                                        <input type="text" name="bName" id="bName" class="form-control" required>
+                                        <input type="text" name="rFname" id="rFname" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="col-md-9">
@@ -91,7 +62,7 @@ input {
                                         <label>
                                             Middle Name
                                         </label>
-                                        <input type="text" name="bName" id="bName" class="form-control" required>
+                                        <input type="text" name="rMname" id="rMname" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="col-md-9">
@@ -99,7 +70,7 @@ input {
                                         <label>
                                             Last Name
                                         </label>
-                                        <input type="text" name="bName" id="bName" class="form-control" required>
+                                        <input type="text" name="rLname" id="rLname" class="form-control" required>
                                     </div>
                                 </div>
                             </div>
@@ -111,7 +82,7 @@ input {
                                             Birthdate
                                         </label>
                                         <p class="input-group input-append datepicker date">
-                                            <input type="text" class="form-control"/>
+                                            <input type="text" class="form-control" name="rBirthdate" id="rBirthdate"/>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default">
                                                     <i class="glyphicon glyphicon-calendar"></i>
@@ -124,7 +95,7 @@ input {
                                         <label class="control-label">
                                             Age
                                         </label>
-                                        <input type="number" name="age" id="age" class="form-control">
+                                        <input type="number" name="rAge" id="rAge" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -134,7 +105,7 @@ input {
                                         <label class="block">
                                             Gender
                                         </label>
-                                          <select name="gender" id="gender" class="cs-select cs-skin-slide" required>
+                                          <select name="rGender" id="rGender" class="cs-select cs-skin-slide" required>
                                             <option value="Male">Male</option>
                                             <option value="Female">Female</option>
                                         </select>
@@ -146,7 +117,7 @@ input {
                                         <label class="block">
                                             Civil Status
                                         </label>
-                                          <select name="civil_status" id="civil_status" class="cs-select cs-skin-slide" required>
+                                          <select name="rCivil_status" id="rCivil_status" class="cs-select cs-skin-slide" required>
                                             <option value="Single">Single</option>
                                             <option value="Married">Married</option>
                                             <option value="Divorced">Divorced</option>
@@ -160,7 +131,7 @@ input {
                                         <label class="block">
                                             Employment
                                         </label>
-                                          <select name="employment" id="employment" class="cs-select cs-skin-slide" required>
+                                          <select name="rEmployment" id="rEmployment" class="cs-select cs-skin-slide" required>
                                             <option value="Employed">Employed</option>
                                             <option value="Unemployed">Unemployed</option>
                                         </select>
@@ -173,7 +144,7 @@ input {
                                         <label class="block">
                                             Voter
                                         </label>
-                                          <select name="voter" id="voter" class="cs-select cs-skin-slide" required>
+                                          <select name="rVoter" id="rVoter" class="cs-select cs-skin-slide" required>
                                             <option value="Yes">Yes</option>
                                             <option value="No">No</option>
                                         </select>
@@ -182,28 +153,39 @@ input {
                             </div>
 
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>
                                             Contact No.
                                         </label>
-                                        <input type="text" name="bContact" id="bContact" class="form-control" required>
+                                        <input type="text" name="rContact_no" id="rContact_no" class="form-control" required>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>
                                             Barangay
                                         </label>
-                                        <input type="text" name="bFax" id="bFax" class="form-control" required>
+                                        <input type="text" name="rBarangay" id="rBarangay" class="form-control" required>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>
                                             Sitio
                                         </label>
-                                        <input type="text" name="bEmail" id="bEmail" class="form-control" required>
+                                        <input type="text" name="rSitio" id="rSitio" class="form-control" required>
+                                    </div>
+                                </div>
+                                 <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>
+                                            Resident Status
+                                        </label>
+                                        <select name="rStatus" id="rStatus" class="cs-select cs-skin-slide" required>
+                                            <option value="Residing">Residing</option>
+                                            <option value="Deceased">Deceased</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -212,7 +194,7 @@ input {
                         </fieldset>
                         <div class="pull-right">
                             <div class="form-group" id="loadImg">
-                                <button type="button" class="btn btn-success btn-wide btn-scroll btn-scroll-top ti-plus" onclick="save_business()"><span>Save</span></button>
+                                <button type="button" class="btn btn-success btn-wide btn-scroll btn-scroll-top ti-plus" onclick="save_resident()"><span>Save</span></button>
                                 <a href="<?php echo base_url();?>index.php/business" class="btn btn-danger btn-wide btn-scroll btn-scroll-top ti-arrow-left"><span>Cancel</span></a>
                             </div>
                         </div>
@@ -230,8 +212,7 @@ input {
 
 
 <script type="text/javascript">
-function view_resident()
-{
+function view_resident() {
     window.location.href = '<?php echo base_url();?>index.php/view_resident';
 }
 
@@ -250,5 +231,38 @@ function readURL(input) {
 
             reader.readAsDataURL(input.files[0]);
         }
+}
+
+function save_resident(){
+        //CHECK FIELD
+            var myTemp = $("#loadImg").html();
+            $("#residentForm").ajaxForm({
+              beforeSend: function() {
+                $("#loadImg").html("<img src='"+base_url+"public/assets/images/loading/loading10.gif' border='0'/>");
+              },
+              complete: function(xhr) {
+                $("#loadImg").html(myTemp);
+                var obj = $.parseJSON(xhr.responseText);
+                if(obj.ok == 0){
+                    swal({
+                        title: "ERROR!",
+                        text: obj.msg,
+                        type: "warning",
+                        confirmButtonColor: "#c82e29"
+                    });
+                }else{
+                    swal({
+                        title: "Success!",
+                        text: obj.msg,
+                        type: "success",
+                        confirmButtonColor: "#007AFF"
+                    },
+                    function(){
+                      location.href = base_url+'index.php/residents/view_business/'+obj.rId;
+                    });
+                }
+              }
+            }).submit();
+        
     }
 </script>

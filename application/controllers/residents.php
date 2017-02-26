@@ -69,8 +69,13 @@ class Residents extends CI_Controller {
 			}
 		}
 
-	function save_residents(){
-		$res = $this->_residents->save_residents();
+	function save_resident(){
+		$res = $this->_residents->save_resident();
+		echo json_encode($res);
+	}
+
+	function delete_resident(){
+		$res = $this->_residents->delete_resident();
 		echo json_encode($res);
 	}
 
@@ -78,6 +83,7 @@ class Residents extends CI_Controller {
 		$res = $this->_residents->get_resident_list();
 		echo json_encode($res);
 	}
+
 
 }
 

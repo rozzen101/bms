@@ -3,8 +3,8 @@ class _genFunction extends CI_Model
 {
 	function get_resident_list(){
 		
-    $aColumns = array( 'res_id','fname','mname','lname','display_picture','age','gender','birthdate','status' );
-    $sIndexColumn = "res_id";
+    $aColumns = array( 'rId','rFname','rMname','rLname','rImage','rAge','rGender','rBirthdate','rStatus' );
+    $sIndexColumn = "rId";
     $sTable = "tbl_resident";
      
      
@@ -127,29 +127,29 @@ class _genFunction extends CI_Model
     $counter=1;
 	foreach($rResult->result_array() as $aRow)
 	{
-		$birthdate=date("m/d/Y",strtotime(str_replace("-", "/", $aRow['birthdate'])));
+		$rBirthdate=date("m/d/Y",strtotime(str_replace("-", "/", $aRow['rBirthdate'])));
 
-		if($aRow['status'] == 'RESIDING'){$resStatus = '<font class="label label-default">'.$aRow['status'].'</font>';}
-		elseif($aRow['status'] == 'DISEASED'){$resStatus = '<font class="label label-danger">'.$aRow['status'].'</font>';}
-		else{$resStatus = '<font class="label label-warning">'.$aRow['status'].'</font>';}
+		if($aRow['rStatus'] == 'RESIDING'){$rStatus = '<font class="label label-default">'.$aRow['rStatus'].'</font>';}
+		elseif($aRow['rStatus'] == 'DISEASED'){$rStatus = '<font class="label label-danger">'.$aRow['rStatus'].'</font>';}
+		else{$rStatus = '<font class="label label-warning">'.$aRow['rStatus'].'</font>';}
 
 		$imgURL = $this->config->item('imgURL');
-		if($aRow['display_picture'] != ''){
-			$primaryPix = $imgURL.'/'.$aRow['display_picture'];
+		if($aRow['rImage'] != ''){
+			$rImage = $imgURL.'/'.$aRow['rImage'];
 		}else{
-			if($aRow['gender'] == 'FEMALE'){$primaryPix = $imgURL.'/femaleDefault.jpg';}
-			else{$primaryPix = $imgURL.'/maleDefault.jpg';}
+			if($aRow['rGender'] == 'FEMALE'){$rImage = $imgURL.'/femaleDefault.jpg';}
+			else{$rImage = $imgURL.'/maleDefault.jpg';}
 		}
 		$row = array();
 			$row[] = $counter;
-			$row[] = $aRow['res_id'];
-			$row[] = '<img src="'.$primaryPix.'" width="32" height="32" class="img-circle" border="0"/>';
-			$row[] = $aRow['fname'];
-			$row[] = $aRow['mname'];
-			$row[] = $aRow['lname'];
-			$row[] = $birthdate;
-			$row[] = $aRow['gender'];
-			$row[] = $resStatus;
+			$row[] = $aRow['rId'];
+			$row[] = '<img src="'.$rImage.'" width="32" height="32" class="img-circle" border="0"/>';
+			$row[] = $aRow['rFname'];
+			$row[] = $aRow['rMname'];
+			$row[] = $aRow['rLname'];
+			$row[] = $rBirthdate;
+			$row[] = $aRow['rGender'];
+			$row[] = $rStatus;
 		$counter++;
 		$output['aaData'][] = $row;
 	}

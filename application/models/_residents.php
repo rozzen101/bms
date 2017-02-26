@@ -3,20 +3,20 @@ class _residents extends CI_Model
 {	
 		function get_resident_list(){
 
-		$fname =  $this->input->get_post('fname');
-		$mname =  $this->input->get_post('mname');
-		$lname =  $this->input->get_post('lname');
-		$gender =  $this->input->get_post('gender');
-		$civil_status =  $this->input->get_post('civil_status');
-		$sitio =  $this->input->get_post('sitio');
+		$rFname =  $this->input->get_post('rFname');
+		$rMname =  $this->input->get_post('rMname');
+		$rLname =  $this->input->get_post('rLname');
+		$rGender =  $this->input->get_post('rGender');
+		$rCivil_status =  $this->input->get_post('rCivil_status');
+		$rSitio =  $this->input->get_post('rSitio');
 
 		$whereData = '';
-		if($fname != ''){$whereData .= "fname LIKE '%".$fname."%' AND ";}
-		if($mname != ''){$whereData .= "mname LIKE '".$mname."%' AND ";}
-		if($lname != ''){$whereData .= "lname LIKE '%".$lname."%' AND ";}
-		if($gender != ''){$whereData .= "gender = '".$gender."' AND ";}
-		if($civil_status != ''){$whereData .= "civil_status = '".$civil_status."' AND ";}
-		if($sitio != ''){$whereData .= "sitio LIKE '%".$sitio."%' AND ";}
+		if($rFname != ''){$whereData .= "rFname LIKE '%".$rFname."%' AND ";}
+		if($rMname != ''){$whereData .= "rMname LIKE '".$rMname."%' AND ";}
+		if($rLname != ''){$whereData .= "rLname LIKE '%".$rLname."%' AND ";}
+		if($rGender != ''){$whereData .= "rGender = '".$rGender."' AND ";}
+		if($rCivil_status != ''){$whereData .= "rCivil_status = '".$rCivil_status."' AND ";}
+		if($rSitio != ''){$whereData .= "rSitio LIKE '%".$rSitio."%' AND ";}
 
 		if($whereData != ''){$whereData = "WHERE ".$whereData;}
 
@@ -26,7 +26,7 @@ class _residents extends CI_Model
 				*
 				FROM
 				tbl_resident
-				".$whereData.' GROUP BY res_id';
+				".$whereData.' GROUP BY rId';
 
 		$rResult = $this->db->query($sql);
 		$iTotal = $rResult->num_rows();
@@ -45,51 +45,82 @@ class _residents extends CI_Model
 
 			$row = array();
 				$row[] = $counter;
-				$row[] = $aRow['fname'].' '.$aRow['mname'].' '.$aRow['lname'];
-				$row[] = date('m/d/Y',strtotime($aRow['birthdate']));
-				$row[] = $aRow['gender'];
-				$row[] = $aRow['age'];
-				$row[] = $aRow['civil_status'];
-				$row[] = $aRow['sitio'];
-				$row[] = '<a href="'.base_url().'index.php/residents/view_resident/'.$aRow['res_id'].'" class="btn btn-transparent btn-xs btn-success"><i class="ti-folder"></i></a>';
-				$row[] = '<a href="'.base_url().'index.php/residents/delete_resident/'.$aRow['res_id'].'" class="btn btn-transparent btn-xs btn-danger"><i class="ti-close"></i></a>';
+				$row[] = $aRow['rFname'].' '.$aRow['rMname'].' '.$aRow['rLname'];
+				$row[] = date('m/d/Y',strtotime($aRow['rBirthdate']));
+				$row[] = $aRow['rGender'];
+				$row[] = $aRow['rAge'];
+				$row[] = $aRow['rCivil_status'];
+				$row[] = $aRow['rSitio'];
+				$row[] = '<a href="'.base_url().'index.php/residents/view_resident/'.$aRow['rId'].'" class="btn btn-transparent btn-xs btn-success"><i class="ti-folder"></i></a>';
+				$row[] = '<button class="btn btn-transparent btn-xs btn-danger" onclick="deleteResident('.$aRow['rId'].')"><i class="ti-close"></i></button>';
 			$counter++;
 			$output['aaData'][] = $row;
 		}
 		return $output;
 	}
 
-	function save_residents(){
-		//ADD BUSINESS INFO
+	function save_resident(){
+		//ADD RESIDENT INFO
 		$rDataArray = array(
-			'fname'			=> $this->input->post('bType'),
-			'bName'			=> $this->input->post('bName'),
-			'bDesc'			=> $this->input->post('bDesc'),
-			'bAddress'		=> $this->input->post('bAddress'),
-			'bContact'		=> $this->input->post('bContact'),
-			'bFax'			=> $this->input->post('bFax'),
-			'bEmail'		=> $this->input->post('bEmail'),
-			'bWebsite'		=> $this->input->post('bWebsite'),
-			'bCleranceFee'	=> $this->input->post('bClearanceFee'),
-			'bStatus'		=> 'PENDING',
-			'bRequestDate'	=> date("Y-m-d h:i:s", time()),
-			'bRemark'		=> $this->input->post('bRemark'),
-			'bCreatedBy'	=> $this->session->userdata('username'),
-			'bCreatedDate'	=> date("Y-m-d h:i:s", time())
+			'rFname'			=> $this->input->post('rFname'),
+			'rMname'			=> $this->input->post('rMname'),
+			'rLname'			=> $this->input->post('rLname'),
+			'rBirthdate'		=> date("Y-m-d", strtotime($this->input->post('rBirthdate'))),
+			'rAge'				=> $this->input->post('rAge'),
+			'rGender'			=> $this->input->post('rGender'),
+			'rCivil_status'		=> $this->input->post('rCivil_status'),
+			'rEmployment'		=> $this->input->post('rEmployment'),
+			'rVoter'			=> $this->input->post('rVoter'),
+			'rContact_no'		=> $this->input->post('rContact_no'),
+			'rBarangay'			=> $this->input->post('rBarangay'),
+			'rSitio'			=> $this->input->post('rSitio'),
+			'rStatus'			=> $this->input->post('rStatus'),
+			'rDate_added'		=> date("Y-m-d h:i:s", time()),
+			'rAdded_by'			=> $this->session->userdata('username')
 		);
-		$insBis = $this->db->insert('tbl_business',$bDataArray);
-		if($insBis){
-			$bid = $this->db->insert_id();
-			//INSERT OWNER
-			foreach ($this->input->post('xres_id') as $xres_id){
-				$ownerData = array(
-					'bid' => $bid,
-					'rid' => $xres_id
-				);
-				$insOwner = $this->db->insert('tbl_business_owner',$ownerData);
+		$insRes = $this->db->insert('tbl_resident',$rDataArray);
+		if($insRes){
+			$rId = $this->db->insert_id();
+			//FOR FILE UPLOAD
+			if(isset($_FILES['rImage']["tmp_name"])){
+				$rImage=$_FILES['rImage']["name"];
+			  if ($_FILES['rImage']["error"] > 0){
+					$msg="<b>DOCUMENT</b> ERROR during UPLOAD!";
+					return $msg;
+			  }else{
+					//GET FILE EXTENSION
+					$ext_temp=explode(".", $rImage);
+					$ext = end($ext_temp);
+					$newFileName="rImage_".$rId.".".$ext;
+					//GET FILE LOCATION
+					$dirLocation="public/residents_images/".$rId."/";
+					if (!file_exists("public/residents_images/".$rId)) {
+						mkdir("public/residents_images/".$rId, 0777, true);
+					}
+
+					//SAVE NEW FILE
+					move_uploaded_file($_FILES['rImage']["tmp_name"],$dirLocation."".$newFileName);
+					
+					//SAVE TO DATABASE
+					$this->db->where('rId',$rId);
+					$this->db->update('tbl_resident',array('rImage'=>$newFileName));
+			  }
 			}
+			//END FILE UPLAD
+
+			//ADD TO ACTION LOG
+			$actioLogArray = array(
+				'aModule'		=> 'RESIDNET',
+				'aSubId'		=> $rId,
+				'aRemark'		=> 'Reisdent Added',
+				'aCreateBy'		=> $rDataArray['rAdded_by'],
+				'aCreatedDate'	=> $rDataArray['rDate_added']
+			);
+			$this->db->insert('tbl_action_log',$actioLogArray);
+
 			$retInf['ok'] = 1;
-			$retInf['msg'] = "New BUSINESS has been ADDED!";
+			$retInf['bid'] = $rId;
+			$retInf['msg'] = "New RESIDENT has been ADDED!";
 		}else{
 			$errNo   = $this->db->_error_number();
        		$errMess = $this->db->_error_message();
@@ -100,21 +131,42 @@ class _residents extends CI_Model
 		return $retInf;
 	}
 
-	function get_resident_data($res_id)
-	{
-		$query = $this->db->query("SELECT * FROM tbl_resident WHERE res_id = $res_id");
+	function delete_resident(){
+		$rId = $this->input->post('rId');  
+		$this->db->where('rId',$rId);
+		$res = $this->db->delete('tbl_resident');
+		if($res){
 
-		if($query->num_rows() > 0)
-		{
-			foreach($query->result() as $row)
-			{
+			//ADD TO ACTION LOG
+			$actioLogArray = array(
+				'aModule'		=> 'RESIDENT',
+				'aSubId'		=> $rId,
+				'aRemark'		=> 'Delete Resident ID no. '.$rId,
+				'aCreateBy'		=> $this->session->userdata('username'),
+				'aCreatedDate'	=> date("Y-m-d h:i:s", time())
+			);
+			$this->db->insert('tbl_action_log',$actioLogArray);
+
+			$retInf['ok'] = 1;
+			$retInf['msg'] = "RESIDENT has been DELETED!";
+		}else{
+			$errNo   = $this->db->_error_number();
+       		$errMess = $this->db->_error_message();
+			$retInf['ok'] = 0;
+			$retInf['msg'] = 'DELETE ERROR {$errNo}:{$errMess}!';
+		}
+		return $retInf;
+	}
+
+
+	function get_resident_data($rId){
+		$query = $this->db->query("SELECT * FROM tbl_resident WHERE rId = $rId");
+		if($query->num_rows() > 0){
+			foreach($query->result() as $row){
 				$data[] = $row;
 			}
-
 			return $data;
-		}
-		else
-		{
+		}else{
 			return false;
 		}
 	}

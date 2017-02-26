@@ -218,7 +218,7 @@ class _business extends CI_Model
 				tbl_business AS b
 				INNER JOIN tbl_business_type AS bt ON b.bType = bt.tId
 				INNER JOIN tbl_business_owner AS bo ON b.bId = bo.bid
-				INNER JOIN tbl_resident AS r ON bo.rid = r.res_id ".$whereData.' GROUP BY b.bId';
+				INNER JOIN tbl_resident AS r ON bo.rid = r.rId ".$whereData.' GROUP BY b.bId';
 
 		$rResult = $this->db->query($sql);
 		$iTotal = $rResult->num_rows();
@@ -296,7 +296,7 @@ class _business extends CI_Model
 
 	function get_business_inf($bid){
         $this->db->where('bId',$bid);
-        $res = $this->db->get('view_business');
+        $res = $this->db->get('tbl_business');
         //return $res->result_array();
         return $res;
     }

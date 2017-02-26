@@ -26,7 +26,7 @@
                                                             <label>
                                                                 Firstname
                                                             </label>
-                                                            <input type="text" name="fname" id="fname" class="form-control">
+                                                            <input type="text" name="rFname" id="rFname" class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
@@ -34,7 +34,7 @@
                                                             <label class="control-label">
                                                                 Middlename
                                                             </label>
-                                                            <input type="text" name="mname" id="mname" class="form-control">
+                                                            <input type="text" name="rMname" id="rMname" class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
@@ -42,7 +42,7 @@
                                                             <label class="control-label">
                                                                 Lastname
                                                             </label>
-                                                            <input type="text" name="lname" id="lname" class="form-control">
+                                                            <input type="text" name="rLname" id="rLname" class="form-control">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -54,7 +54,7 @@
                                                             <label class="block">
                                                                 Gender
                                                             </label>
-                                                            <select name="gender" id="gender" class="cs-select cs-skin-slide" required>
+                                                            <select name="rGender" id="rGender" class="cs-select cs-skin-slide" required>
                                                                 <option value=""></option>
                                                                 <option value="Male">Male</option>
                                                                 <option value="Female">Female</option>
@@ -66,7 +66,7 @@
                                                             <label class="block">
                                                                 Civil Status
                                                             </label>
-                                                            <select name="civil_status" id="civil_status" class="cs-select cs-skin-slide" required>
+                                                            <select name="rCivil_status" id="rCivil_status" class="cs-select cs-skin-slide" required>
                                                                 <option value=""></option>
                                                                 <option value="Single">Single</option>
                                                                 <option value="Married">Married</option>
@@ -81,7 +81,7 @@
                                                             <label>
                                                                 Sitio
                                                             </label>
-                                                            <input type="text" name="sitio" id="sitio" class="form-control">
+                                                            <input type="text" name="rSitio" id="rSitio" class="form-control">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -161,14 +161,14 @@
           "sAjaxSource": base_url+"index.php/residents/get_resident_list",
           "fnServerParams": function ( aoData ) {
             aoData.push( 
-                { "name": "fname", "value": $("#fname").val() },
-                { "name": "mname", "value": $("#mname").val() },
-                { "name": "lname", "value": $("#lname").val() },
-                { "name": "birthdate", "value": $("#birthdate").val() },
-                { "name": "age", "value": $("#age").val() },
-                { "name": "gender", "value": $("#gender").val() },
-                { "name": "civil_status", "value": $("#civil_status").val() },
-                { "name": "sitio", "value": $("#sitio").val() }
+                { "name": "rFname", "value": $("#rFname").val() },
+                { "name": "rMname", "value": $("#rMname").val() },
+                { "name": "rLname", "value": $("#rLname").val() },
+                { "name": "rBirthdate", "value": $("#rBirthdate").val() },
+                { "name": "rAge", "value": $("#rAge").val() },
+                { "name": "rGender", "value": $("#rGender").val() },
+                { "name": "rCivil_status", "value": $("#rCivil_status").val() },
+                { "name": "rSitio", "value": $("#rSitio").val() }
             );
           },
           "aoColumns": [ 
@@ -206,8 +206,42 @@
         });
     }
 
-function view_resident()
-{
-    window.location.href = '<?php echo base_url();?>index.php/resident/view_resident';
-}
+    function deleteResident(rId){
+        swal({
+          title: "Are you sure?",
+          text: "This action will not be undo!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonClass: "btn btn-danger",
+          confirmButtonText: "Yes, delete it!",
+          closeOnConfirm: false
+        },
+        function(){
+            $.post(base_url+'index.php/residents/delete_resident','&rId='+rId,function(data){
+                var obj = $.parseJSON(data);
+                if(obj.ok == 0){
+                    swal({
+                        title: "ERROR!",
+                        text: obj.msg,
+                        type: "warning",
+                        confirmButtonColor: "#c82e29"
+                    });
+                }else{
+                    swal({
+                        title: "Success!",
+                        text: obj.msg,
+                        type: "success",
+                        confirmButtonColor: "#007AFF"
+                    },
+                    function(){
+                        location.reload();
+                    });
+                }
+            });
+        });
+    }
+
+  function view_resident(){
+      window.location.href = '<?php echo base_url();?>index.php/resident/view_resident';
+  }
 </script>
