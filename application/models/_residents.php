@@ -2,7 +2,6 @@
 class _residents extends CI_Model
 {	
 		function get_resident_list(){
-
 		$rFname =  $this->input->get_post('rFname');
 		$rMname =  $this->input->get_post('rMname');
 		$rLname =  $this->input->get_post('rLname');
@@ -51,6 +50,7 @@ class _residents extends CI_Model
 				$row[] = $aRow['rAge'];
 				$row[] = $aRow['rCivil_status'];
 				$row[] = $aRow['rSitio'];
+				$row[] = $aRow['rStatus'];
 				$row[] = '<a href="'.base_url().'index.php/residents/view_resident/'.$aRow['rId'].'" class="btn btn-transparent btn-xs btn-success"><i class="ti-folder"></i></a>';
 				$row[] = '<button class="btn btn-transparent btn-xs btn-danger" onclick="deleteResident('.$aRow['rId'].')"><i class="ti-close"></i></button>';
 			$counter++;
@@ -110,7 +110,7 @@ class _residents extends CI_Model
 
 			//ADD TO ACTION LOG
 			$actioLogArray = array(
-				'aModule'		=> 'RESIDNET',
+				'aModule'		=> 'RESIDENT',
 				'aSubId'		=> $rId,
 				'aRemark'		=> 'Reisdent Added',
 				'aCreateBy'		=> $rDataArray['rAdded_by'],
@@ -119,7 +119,7 @@ class _residents extends CI_Model
 			$this->db->insert('tbl_action_log',$actioLogArray);
 
 			$retInf['ok'] = 1;
-			$retInf['bid'] = $rId;
+			$retInf['rId'] = $rId;
 			$retInf['msg'] = "New RESIDENT has been ADDED!";
 		}else{
 			$errNo   = $this->db->_error_number();
@@ -159,17 +159,87 @@ class _residents extends CI_Model
 	}
 
 
-	function get_resident_data($rId){
-		$query = $this->db->query("SELECT * FROM tbl_resident WHERE rId = $rId");
-		if($query->num_rows() > 0){
-			foreach($query->result() as $row){
-				$data[] = $row;
+	function update_resident(){
+		//UPDATE RESIDENT INFO
+		$rId = $this->input->post('rId');
+
+		$rDataArray = array(
+			'rFname'			=> $this->input->post('rFname'),
+			'rMname'			=> $this->input->post('rMname'),
+			'rLname'			=> $this->input->post('rLname'),
+			'rBirthdate'		=> date("Y-m-d", strtotime($this->input->post('rBirthdate'))),
+			'rAge'				=> $this->input->post('rAge'),
+			'rGender'			=> $this->input->post('rGender'),
+			'rCivil_status'		=> $this->input->post('rCivil_status'),
+			'rEmployment'		=> $this->input->post('rEmployment'),
+			'rVoter'			=> $this->input->post('rVoter'),
+			'rContact_no'		=> $this->input->post('rContact_no'),
+			'rBarangay'			=> $this->input->post('rBarangay'),
+			'rSitio'			=> $this->input->post('rSitio'),
+			'rStatus'			=> $this->input->post('rStatus'),
+			'rEditedBy'		=> $this->session->userdata('username'),
+			'rEditedDate'	=> date("Y-m-d h:i:s", time())
+		);
+		$this->db->where('rId',$rId);
+		$updRes = $this->db->update('tbl_resident',$rDataArray);
+		if($updRes){
+			
+			//FOR FILE UPLOAD
+			if(isset($_FILES['rImage']["tmp_name"])){
+				$rImage=$_FILES['rImage']["name"];
+			  if ($_FILES['rImage']["error"] > 0){
+					$msg="<b>DOCUMENT</b> ERROR during UPLOAD!";
+					return $msg;
+			  }else{
+					//GET FILE EXTENSION
+					$ext_temp=explode(".", $rImage);
+					$ext = end($ext_temp);
+					$newFileName="rImage_".$rId.".".$ext;
+					//GET FILE LOCATION
+					$dirLocation="public/residents_images/".$rId."/";
+					if (!file_exists("public/residents_images/".$rId)) {
+						mkdir("public/residents_images/".$rId, 0777, true);
+					}
+
+					//SAVE NEW FILE
+					move_uploaded_file($_FILES['rImage']["tmp_name"],$dirLocation."".$newFileName);
+					
+					//SAVE TO DATABASE
+					$this->db->where('rId',$rId);
+					$this->db->update('tbl_resident',array('rImage'=>$newFileName));
+			  }
 			}
-			return $data;
+			//END FILE UPLAD
+
+			//ADD TO ACTION LOG
+			$actioLogArray = array(
+				'aModule'		=> 'RESIDENT',
+				'aSubId'		=> $rId,
+				'aRemark'		=> 'Reisdent Updated',
+				'aCreateBy'		=> $rDataArray['rEditedBy'],
+				'aCreatedDate'	=> $rDataArray['rEditedDate']
+			);
+			$this->db->insert('tbl_action_log',$actioLogArray);
+
+			$retInf['ok'] = 1;
+			$retInf['rId'] = $rId;
+			$retInf['msg'] = "RESIDENT has been UPDATED!";
 		}else{
-			return false;
+			$errNo   = $this->db->_error_number();
+       		$errMess = $this->db->_error_message();
+			$retInf['ok'] = 0;
+			$retInf['msg'] = 'DATA ERROR {$errNo}:{$errMess}!';
 		}
+
+		return $retInf;
 	}
+
+	function get_resident_data($rId){
+        $this->db->where('rId',$rId);
+        $res = $this->db->get('tbl_resident');
+        return $res;
+    }
+
 
 }
 ?>

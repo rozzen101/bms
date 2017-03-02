@@ -1,8 +1,3 @@
-
-
-
-
-
 <style type="text/css">
 .hr_cust{
 	border: 1px solid #34029D;
@@ -11,7 +6,7 @@
 </style>
 
 
-
+<?php  $rData = $rInf->row(); ?>
 
 
 <html>
@@ -33,10 +28,10 @@
 <br>
 <h4>TO WHOM IT MAY CONCERN:</h4>
 <br>
-<p>	This is to certify that <b>LOUBRANDO GARCIA DEJITO</b>, 25 of age, MALE<br>
-SINGLE, Filipino, is a resident of BARANGAY MACTAN, LAPU-LAPU CITY, CEBU, this City is one of the indigents in our barangay</p>
+<p>	This is to certify that <b><?php echo strtoupper($rData->rFname).' '.strtoupper($rData->rMname).' '.strtoupper($rData->rLname);?></b>, 25 of age, MALE<br>
+SINGLE, Filipino, is a resident of <b>BARANGAY <?php echo strtoupper($rData->rBarangay);?></b>, <b>LAPU-LAPU CITY</b>, <b>CEBU</b>, this City is one of the indigents in our barangay</p>
 <br>
-<p>This certification is being issued upon the request of  <b>LOUBRANDO GARCIA DEJITO</b> for <b>EMPLOYMENT</b><br>
+<p>This certification is being issued upon the request of  <b><?php echo strtoupper($rData->rFname).' '.strtoupper($rData->rMname).' '.strtoupper($rData->rLname);?></b> for <b>EMPLOYMENT</b><br>
 
 
 
@@ -44,7 +39,7 @@ SINGLE, Filipino, is a resident of BARANGAY MACTAN, LAPU-LAPU CITY, CEBU, this C
 </p>
 <br><br>
 <p>Issued this <?php echo date("jS");?> day of <?php echo date('F').' '.date('Y');;?> at the Office of the Punong Barangay, BARANGAY<br>
-MACTAN, LAPU-LAPU CITY, CEBU PHILIPPINES.</p>
+<?php echo strtoupper($rData->rBarangay);?>, LAPU-LAPU CITY, CEBU PHILIPPINES.</p>
 <br>
 <center>
 <img src="<?php echo base_url();?>public/signatures/sample.png" style="position:absolute;right:260px;" height="40" width="100"><br>

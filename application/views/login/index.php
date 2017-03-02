@@ -350,7 +350,7 @@ label:hover:before {
       </div>
       <div class="etc-login-form">
         <center>
-        <b>Barangay Management System</b>
+          <img src="<?php echo base_url();?>public/assets/images/bms_logo.png" height="50" width="100">
         <p>Powered By <br>LD Document Services | IT Solutions</p>
       </center>
         <!-- <p>forgot your password? <a href="#">click here</a></p>

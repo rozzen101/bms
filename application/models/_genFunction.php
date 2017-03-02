@@ -285,6 +285,13 @@ class _genFunction extends CI_Model
         return $reAuNum;
     }
     //END AUTO NUMBERS
+
+    function get_document(){
+        $dId=$this->input->post('dId');
+        $this->db->where('dId',$dId);
+        $res = $this->db->get('tbl_documents');
+        return $res;
+    }
 }
 
 ?>

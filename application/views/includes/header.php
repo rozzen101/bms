@@ -65,7 +65,7 @@
                         <div class="navbar-title">
                             <span>Main Navigation</span>
                         </div>
-                        <ul class="main-navigation-menu">
+                        <ul class="main-navigation-menu"><!-- 
                             <li >
                                 <a href="<?php echo base_url();?>index.php/dashboard">
                                     <div class="item-content">
@@ -77,7 +77,7 @@
                                         </div>
                                     </div>
                                 </a>
-                            </li>
+                            </li> -->
 
                             <!-- <li>
                                 <a href="#">
@@ -123,10 +123,36 @@
                               <a href="<?php echo base_url();?>index.php/reports">
                                     <div class="item-content">
                                          <div class="item-media">
+                                            <i class="ti-stamp" ></i>
+                                        </div>
+                                        <div class="item-inner">
+                                            <span class="title"> Legals </span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            
+                            <li>
+                              <a href="<?php echo base_url();?>index.php/reports">
+                                    <div class="item-content">
+                                         <div class="item-media">
                                             <i class="ti-stats-up" ></i>
                                         </div>
                                         <div class="item-inner">
                                             <span class="title"> Reports </span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li>
+                              <a href="<?php echo base_url();?>index.php/reports">
+                                    <div class="item-content">
+                                         <div class="item-media">
+                                            <i class="ti-power-off" ></i>
+                                        </div>
+                                        <div class="item-inner">
+                                            <span class="title"> Logout </span>
                                         </div>
                                     </div>
                                 </a>
@@ -167,7 +193,7 @@
                         <a href="#" class="sidebar-mobile-toggler pull-left hidden-md hidden-lg" class="btn btn-navbar sidebar-toggle" data-toggle-class="app-slide-off" data-toggle-target="#app" data-toggle-click-outside="#sidebar">
                             <i class="ti-align-justify"></i>
                         </a>
-                        <a class="navbar-brand" href="<?php echo base_url();?>index.php/dashboard">
+                        <a class="navbar-brand" href="<?php echo base_url();?>index.php/residents">
                             <img src="<?php echo base_url();?>public/assets/images/llc_header.png" class="img-responsive"  />
                         </a>
                         <a href="#" class="sidebar-toggler pull-right visible-md visible-lg" data-toggle-class="app-sidebar-closed" data-toggle-target="#app">
@@ -191,41 +217,10 @@
                                                 <li class="unread">
                                                     <a href="javascript:;" class="unread">
                                                         <div class="clearfix">
-                                                            <div class="thread-image">
-                                                                <img src="./<?php echo base_url();?>public/assets/images/avatar-2.jpg" alt="">
-                                                            </div>
                                                             <div class="thread-content">
-                                                                <span class="author">Nicole Bell</span>
-                                                                <span class="preview">Duis mollis, est non commodo luctus, nisi erat porttitor ligula...</span>
-                                                                <span class="time"> Just Now</span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:;" class="unread">
-                                                        <div class="clearfix">
-                                                            <div class="thread-image">
-                                                                <img src="./<?php echo base_url();?>public/assets/images/avatar-3.jpg" alt="">
-                                                            </div>
-                                                            <div class="thread-content">
-                                                                <span class="author">Steven Thompson</span>
-                                                                <span class="preview">Duis mollis, est non commodo luctus, nisi erat porttitor ligula...</span>
-                                                                <span class="time">8 hrs</span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:;">
-                                                        <div class="clearfix">
-                                                            <div class="thread-image">
-                                                                <img src="./<?php echo base_url();?>public/assets/images/avatar-5.jpg" alt="">
-                                                            </div>
-                                                            <div class="thread-content">
-                                                                <span class="author">Kenneth Ross</span>
-                                                                <span class="preview">Duis mollis, est non commodo luctus, nisi erat porttitor ligula...</span>
-                                                                <span class="time">14 hrs</span>
+                                                                <span class="author">BUSINESS PERMIT EXPIRING</span>
+                                                                <span class="preview">Click to View</span>
+                                                                <span class="time">02/01/2017</span>
                                                             </div>
                                                         </div>
                                                     </a>

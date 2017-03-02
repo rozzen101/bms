@@ -110,7 +110,7 @@
 
                                            <fieldset>
                                             <legend>
-                                              Business List
+                                              Residents List
                                             </legend>
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -124,6 +124,7 @@
                                                                 <th>Age</th>
                                                                 <th>Civil Status</th>
                                                                 <th>Sitio</th>
+                                                                <th>Status</th>
                                                                 <th>V</th>
                                                                 <th>D</th>
                                                             </tr>
@@ -177,6 +178,7 @@
             {"bSortable":true,"sWidth": "5%"},
             {"bSortable":true,"sWidth": "5%"},
             {"bSortable":true,"sWidth": "5%"},
+            {"bSortable":true,"sWidth": "9%"},
             {"bSortable":true,"sWidth": "10%"},
             {"bSortable":true,"sWidth": "10%"},
             {"bSortable":false,"sWidth": "1%"},
